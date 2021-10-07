@@ -14,12 +14,14 @@ userRouter.get('/', (req, res, next) => {
 
 userRouter.post('/', (req, res, next) => {
   const result = userService.createUser(req.body);
-  res.json(result);
+  res.json({
+    id: result,
+  });
   next();
 });
 
 userRouter.get('/:userId', (req, res, next) => {
-  const result = userService.getUser(<number> req.params.userId);
+  const result = userService.getUser(req.params.userId);
   res.json(result);
   next();
 })

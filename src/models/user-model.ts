@@ -1,11 +1,13 @@
-export default class UserModel {
-  private Users: Record<string, unknown>[] = [];
+import { IUserModel, IInsertUserModel } from "../types/models";
 
-  public getUsers(): Record<string, unknown>[] {
+export default class UserModel {
+  private Users: IUserModel[] = [];
+
+  public getUsers(): IUserModel[] {
     return this.Users;
   }
 
-  public getUser(userId: number): Record<string, unknown> {
+  public getUser(userId: number): IUserModel {
     const user = this.Users.find(user => user.id === userId);
     if (!user) {
       throw new Error(`Cannot find #${userId}`);
@@ -13,7 +15,7 @@ export default class UserModel {
     return user;
   }
 
-  public insertUser(userData: Record<string, unknown>): Record<string, unknown> {
+  public insertUser(userData: IInsertUserModel): IUserModel {
     this.Users.push({ id: this.Users.length + 1, ...userData });
     return this.Users[this.Users.length];
   }
