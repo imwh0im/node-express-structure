@@ -27,6 +27,9 @@ export default class UserService {
 
   public getUser(userId: number): IGetUser {
     const user = this.userModel.getUser(userId);
+    if (!user) {
+      throw new Error(`Cannot find userId#${userId}`);
+    }
     const data: IGetUser = {
       id: user.id,
       name: user.name,
@@ -38,7 +41,13 @@ export default class UserService {
 
   public updateUser(userId: number, userData: IUpdateUser): boolean {
     try {
-      this.userModel.updateUser(userId, userData);
+      const user = this.userModel.getUser(userId);
+      if (!user) {
+        throw new Error(`Cannot find userId#${userId}`);
+      }
+      this.userModel.deleteUser(userId);
+      const updateUserData = Object.assign(user, userData);
+      this.userModel.insertUser(updateUserData);
       return true
     } catch (err) {
       return false

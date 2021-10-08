@@ -7,11 +7,8 @@ export default class UserModel {
     return this.Users;
   }
 
-  public getUser(userId: number): IUserModel {
+  public getUser(userId: number): IUserModel | undefined {
     const user = this.Users.find(user => user.id === userId);
-    if (!user) {
-      throw new Error(`Cannot find #${userId}`);
-    }
     return user;
   }
 
@@ -27,7 +24,7 @@ export default class UserModel {
     this.insertUser(updateUserData);
   }
 
-  private deleteUser(userId: number) {
+  public deleteUser(userId: number): void {
     const userIndex = this.getUserIndex(userId);
     this.Users.splice(userIndex, 1);
   }
