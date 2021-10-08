@@ -1,4 +1,4 @@
-import { IUserModel, IInsertUserModel } from "../types/models";
+import { IUserModel, IInsertUserModel, IUpdateUser } from "../types/models";
 
 export default class UserModel {
   private Users: IUserModel[] = [];
@@ -19,4 +19,25 @@ export default class UserModel {
     this.Users.push({ id: this.Users.length + 1, ...userData });
     return this.Users[this.Users.length];
   }
+
+  public updateUser(userId: number, userData: IUpdateUser): void {
+    const user = this.getUser(userId);
+    this.deleteUser(userId);
+    const updateUserData = Object.assign(user, userData);
+    this.insertUser(updateUserData);
+  }
+
+  private deleteUser(userId: number) {
+    const userIndex = this.getUserIndex(userId);
+    this.Users.splice(userIndex, 1);
+  }
+
+  private getUserIndex(userId: number) {
+    const userIndex = this.Users.findIndex(user => user.id === userId);
+    if (userIndex === -1) {
+      throw new Error(`Cannot find userId#${userId}`);
+    }
+    return userIndex
+  }
+
 }

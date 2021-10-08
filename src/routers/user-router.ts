@@ -21,8 +21,14 @@ userRouter.post('/', (req, res, next) => {
 });
 
 userRouter.get('/:userId', (req, res, next) => {
-  const result = userService.getUser(req.params.userId);
+  const result = userService.getUser(req.params.userId as unknown as number);
   res.json(result);
+  next();
+})
+
+userRouter.post('/:userId', (req, res, next) => {
+  const result = userService.updateUser(req.params.userId as unknown as number, req.body)
+  res.json({ result });
   next();
 })
 

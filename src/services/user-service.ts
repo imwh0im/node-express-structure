@@ -2,7 +2,7 @@ import UserModel from "../models/user-model";
 import dayjs from 'dayjs';
 
 import { IGetUser } from "../types/services/get-user";
-import { IInsertUserModel } from "../types/models";
+import { IInsertUserModel, IUpdateUser } from "../types/models";
 
 export default class UserService {
   private userModel = new UserModel();
@@ -34,5 +34,14 @@ export default class UserService {
       createdAt: dayjs(user.createdAt).format('YYYY-MM-DD HH:mm:ss'),
     }
     return data;
+  }
+
+  public updateUser(userId: number, userData: IUpdateUser): boolean {
+    try {
+      this.userModel.updateUser(userId, userData);
+      return true
+    } catch (err) {
+      return false
+    }
   }
 }
