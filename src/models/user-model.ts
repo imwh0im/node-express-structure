@@ -36,5 +36,4 @@ export default class UserModel {
     }
     return userIndex
   }
-
 }
