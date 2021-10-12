@@ -3,6 +3,5 @@ export interface IInsertUserModel {
   name: string;
   password: string;
   isActive: 'enabled' | 'disabled';
-  updatedAt: Date;
-  createdAt: Date;
+  createdAt?: Date;
 }

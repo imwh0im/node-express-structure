@@ -1,4 +1,5 @@
 import { IUserModel, IInsertUserModel, IUpdateUser } from "../types/models";
+import dayjs from "dayjs";
 
 export default class UserModel {
   private Users: IUserModel[] = [];
@@ -13,15 +14,32 @@ export default class UserModel {
   }
 
   public insertUser(userData: IInsertUserModel): IUserModel {
-    this.Users.push({ id: this.Users.length + 1, ...userData });
+    this.Users.push({
+      id: this.Users.length + 1,
+      createdAt: dayjs().toDate(),
+      updatedAt: dayjs().toDate(),
+      ...userData,
+    });
     return this.Users[this.Users.length];
   }
 
-  public updateUser(userId: number, userData: IUpdateUser): void {
+  public updateUser(userId: number, userData: IUpdateUser): IUserModel {
     const user = this.getUser(userId);
+    if (!user) {
+      throw new Error(`Cannot update userId#${userId}`);
+    }
+
     this.deleteUser(userId);
     const updateUserData = Object.assign(user, userData);
-    this.insertUser(updateUserData);
+
+    const updatedUserData = this.insertUser({
+      id: updateUserData.id,
+      name: updateUserData.name,
+      password: updateUserData.password,
+      isActive: updateUserData.isActive,
+      createdAt: updateUserData.createdAt,
+    });
+    return updatedUserData;
   }
 
   public deleteUser(userId: number): void {
@@ -29,7 +47,7 @@ export default class UserModel {
     this.Users.splice(userIndex, 1);
   }
 
-  private getUserIndex(userId: number) {
+  private getUserIndex(userId: number): number {
     const userIndex = this.Users.findIndex(user => user.id === userId);
     if (userIndex === -1) {
       throw new Error(`Cannot find userId#${userId}`);
