@@ -1,2 +1,2 @@
-# node-good-architecture
-Good Architecture in NodeJS
+# node-good-structure
+Good structure in NodeJS (expressJS)
