@@ -3,7 +3,6 @@ import { Router } from 'express';
 import UserService from '../services/user-service';
 
 const userRouter = Router();
-
 const userService = new UserService();
 
 userRouter.get('/', (req, res, next) => {
